@@ -10,7 +10,10 @@ import (
 )
 
 type Config struct {
-	DBUrl string
+	DBUrl     string
+	Port      string
+	JWTSecret string
+	JWTExpMin string
 }
 
 var config *Config
@@ -41,7 +44,10 @@ func loadConfig() (*Config, error) {
 	)
 
 	return &Config{
-		DBUrl: dsn,
+		DBUrl:     dsn,
+		Port:      os.Getenv("PORT"),
+		JWTSecret: os.Getenv("JWT_SECRET"),
+		JWTExpMin: os.Getenv("JWT_EXPIRATION_MINUTES"),
 	}, err
 
 }

@@ -30,7 +30,7 @@ func GetDatabaseConnection() *Database {
 func connect() *gorm.DB {
 	c := config.GetConfig()
 
-	db, err := gorm.Open(postgres.Open(c.DBUrl), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(c.DBURL), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting database: %v", err)
 	}
@@ -40,7 +40,7 @@ func connect() *gorm.DB {
 	)
 
 	if err != nil {
-		log.Fatal("Error migrating database: %v", err)
+		log.Fatalf("Error migrating database: %v", err)
 	}
 
 	return db

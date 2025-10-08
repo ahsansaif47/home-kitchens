@@ -1,5 +1,7 @@
 package constants
 
-const Customer = 1
-const Vendor = 2
-const Admin = 3
+const (
+	RoleUser   = 1
+	RoleVendor = 2
+	Admin      = 3
+)
