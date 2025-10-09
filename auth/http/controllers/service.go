@@ -6,6 +6,11 @@ import (
 )
 
 type IUserService interface {
+	CreateUser(user *models.User) error
+	FindAll() ([]models.User, error)
+	FindByID(id string) (*models.User, error)
+	GetAllVendors() ([]models.User, error)
+	GetAllUsers() ([]models.User, error)
 	// Define service methods here
 }
 

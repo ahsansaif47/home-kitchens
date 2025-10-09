@@ -1,8 +1,8 @@
 package dto
 
 type UserSignupRequest struct {
-	UserName    string  `json:"user_name" validate:"required"`
-	FirstName   string  `json:"first_name" validate:"required"`
+	UserName    string  `json:"user_name" validate:"required,min=3,max=50"`
+	FirstName   string  `json:"first_name" validate:"required, min=3,max=50"`
 	Email       string  `json:"email" validate:"required,email"`
 	Password    string  `json:"password" validate:"required,min=6"`
 	DOB         *string `json:"dob,omitempty"`
@@ -11,6 +11,5 @@ type UserSignupRequest struct {
 }
 
 type UserSignupResponse struct {
-	ID          uint   `json:"id"`
 	AccessToken string `json:"access_token"`
 }

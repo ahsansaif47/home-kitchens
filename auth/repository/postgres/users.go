@@ -1,12 +1,15 @@
 package postgres
 
 import (
+	"errors"
+
 	"github.com/ahsansaif47/home-kitchens/auth/constants"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
 	"gorm.io/gorm"
 )
 
 type IUserRepository interface {
+	CheckExistingEmail(email string) (bool, error)
 	CreateUser(user *models.User) error
 	FindAll() ([]models.User, error)
 	FindByID(id string) (*models.User, error)
@@ -22,8 +25,28 @@ func NewUserRepository(db *gorm.DB) IUserRepository {
 	return &UserRepository{db: db}
 }
 
+func (r *UserRepository) CheckExistingEmail(email string) (bool, error) {
+	err := r.db.Where("email = ?", email).First(&models.User{}).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
 // Methods for IUserRepository here
 func (r *UserRepository) CreateUser(user *models.User) error {
+
+	status, err := r.CheckExistingEmail(user.Email)
+	if err != nil {
+		return err
+	}
+	if status {
+		return constants.ErrUserAlreadyExists
+	}
+
 	result := r.db.Create(user)
 	return result.Error
 }
