@@ -5,6 +5,7 @@ import (
 
 	"github.com/ahsansaif47/home-kitchens/auth/constants"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
+	"github.com/ahsansaif47/home-kitchens/auth/utils"
 	"gorm.io/gorm"
 )
 
@@ -15,6 +16,8 @@ type IUserRepository interface {
 	FindByID(id string) (*models.User, error)
 	GetAllVendors() ([]models.User, error)
 	GetAllUsers() ([]models.User, error)
+	SetNewPassword(email, newPassword string) (bool, error)
+	ValidateUserCredentials(email, password string) (*models.User, error)
 }
 
 type UserRepository struct {
@@ -36,9 +39,7 @@ func (r *UserRepository) CheckExistingEmail(email string) (bool, error) {
 	return true, nil
 }
 
-// Methods for IUserRepository here
 func (r *UserRepository) CreateUser(user *models.User) error {
-
 	status, err := r.CheckExistingEmail(user.Email)
 	if err != nil {
 		return err
@@ -73,4 +74,34 @@ func (r *UserRepository) GetAllUsers() ([]models.User, error) {
 	var users []models.User
 	result := r.db.Where("role_id = ?", constants.RoleUser).Find(&users)
 	return users, result.Error
+}
+
+func (r *UserRepository) SetNewPassword(email, newPassword string) (bool, error) {
+	passwordHash, err := utils.GeneratePasswordHash(newPassword)
+	if err != nil {
+		return false, err
+	}
+	if err := r.db.Model(&models.User{}).Where("email = ?", email).Update("password_hash", passwordHash).Error; err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *UserRepository) ValidateUserCredentials(email, password string) (*models.User, error) {
+	var user models.User
+
+	err := r.db.Where("LOWER(email) = ?", email).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	if !utils.CheckPasswordHash(password, *user.PasswordHash) {
+		return nil, nil
+	}
+
+	return &user, nil
 }

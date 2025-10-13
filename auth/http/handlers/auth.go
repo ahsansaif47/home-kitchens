@@ -27,10 +27,10 @@ func NewAuthHandler(service controllers.IUserService) *AuthHandler {
 	}
 }
 
-// CreateUser
+// SignUp
 //
-//	@Summary		Create user
-//	@Description	Create a new user
+//	@Summary		Create User
+//	@Description	Create a New User
 //	@Tags			User
 //	@Accept			json
 //	@Param			body	body	dto.UserSignupRequest	true	"Signup User Request"
@@ -54,7 +54,6 @@ func (h *AuthHandler) CreateUser(ctx *fiber.Ctx) error {
 	h.validator.RegisterValidation("password", utils.PasswordValidator)
 	// Validate the request
 	if err = h.validator.Struct(userReq); err != nil {
-
 		validationErrors := err.(validator.ValidationErrors)
 		for _, err := range validationErrors {
 			fieldName := err.Field()
@@ -66,7 +65,7 @@ func (h *AuthHandler) CreateUser(ctx *fiber.Ctx) error {
 		}
 	}
 
-	passwordHash, err := utils.HashPassword(userReq.Password)
+	passwordHash, err := utils.GeneratePasswordHash(userReq.Password)
 	if passwordHash == "" || err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to hash password",
@@ -102,6 +101,56 @@ func (h *AuthHandler) CreateUser(ctx *fiber.Ctx) error {
 	response := dto.UserSignupResponse{
 		AccessToken: tokenStr,
 	}
+
+	return ctx.Status(fiber.StatusOK).JSON(response)
+}
+
+// SignIn
+//
+//	@Summary		Authenticate User
+//	@Description	Login User into the System
+//	@Tags			User
+//	@Accept			json
+//	@Param			body	body	dto.UserLoginRequest	true	"Signin User Request"
+//
+//	@Produce		json
+//	@Body			user  	dto.UserLoginRequest	 			true 	"User Signup Request"
+//	@Success		200		{object}	dto.UserLoginResponse
+//	@Failure		400		{object}	fiber.Error
+//	@Failure		500		{object}	fiber.Error
+//	@Router			/signup [post]
+func (h *AuthHandler) Signin(ctx *fiber.Ctx) error {
+	signinReq := dto.UserLoginRequest{}
+
+	err := ctx.BodyParser(&signinReq)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Cannot parse JSON",
+		})
+	}
+
+	h.validator.RegisterValidation("password", utils.PasswordValidator)
+
+	if err := h.validator.Struct(&signinReq); err != nil {
+		validationErrors := err.(validator.ValidationErrors)
+		for _, err := range validationErrors {
+			fieldName := err.Field()
+			if msg, exist := constants.CustomValidationErrors[fieldName]; exist {
+				return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": msg,
+				})
+			}
+		}
+	}
+
+	passwordHash, err := utils.GeneratePasswordHash(signinReq.Password)
+	if passwordHash == "" || err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to hash password",
+		})
+	}
+
+	response := dto.UserLoginResponse{}
 
 	return ctx.Status(fiber.StatusOK).JSON(response)
 }

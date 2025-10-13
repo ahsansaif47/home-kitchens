@@ -36,9 +36,9 @@ func connect() *gorm.DB {
 	}
 
 	err = db.AutoMigrate(
+		&models.Role{},
 		&models.User{},
 		&models.UserAddress{},
-		&models.Role{},
 	)
 
 	if err != nil {

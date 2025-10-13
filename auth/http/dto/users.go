@@ -13,3 +13,14 @@ type UserSignupRequest struct {
 type UserSignupResponse struct {
 	AccessToken string `json:"access_token"`
 }
+
+type UserLoginRequest struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=6"`
+}
+
+type UserLoginResponse struct {
+	AccessToken string `json:"access_token"`
+	UserName    string `json:"user_name"`
+	RoleID      uint   `json:"role_id"`
+}

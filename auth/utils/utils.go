@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/go-playground/validator/v10"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func PasswordValidator(fv validator.FieldLevel) bool {
@@ -16,4 +17,17 @@ func PasswordValidator(fv validator.FieldLevel) bool {
 		hasSpecial = regexp.MustCompile(`[!@#$%^&*()_\-=\[\]{}|;:'",.<>?/~\\]`).MatchString(password)
 	)
 	return hasMinLen && hasUpper && hasLower && hasNumber && hasSpecial
+}
+
+func GeneratePasswordHash(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedPassword), nil
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }

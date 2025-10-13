@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/joho/godotenv"
@@ -32,9 +33,9 @@ func GetConfig() *Config {
 }
 
 func loadConfig() (*Config, error) {
-	err := godotenv.Load()
+	err := godotenv.Load(filepath.Join("..", "..", ".env"))
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s, port=%s sslmode=%s",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		os.Getenv("POSTGRES_SERVER"),
 		os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PASSWORD"),

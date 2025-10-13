@@ -22,6 +22,7 @@ type User struct {
 	DOB              *string        `gorm:""`
 	PhoneNumber      *string        `gorm:""`
 	Verified         bool           `gorm:"default:false"`
+	IsBlocked        bool           `gorm:"default:false"`
 }
 
 type UserAddress struct {

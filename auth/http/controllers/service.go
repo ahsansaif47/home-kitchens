@@ -11,7 +11,7 @@ type IUserService interface {
 	FindByID(id string) (*models.User, error)
 	GetAllVendors() ([]models.User, error)
 	GetAllUsers() ([]models.User, error)
-	// Define service methods here
+	SetNewPassword(email, newPassword string) (bool, error)
 }
 
 type UserService struct {
@@ -42,4 +42,12 @@ func (s *UserService) GetAllVendors() ([]models.User, error) {
 
 func (s *UserService) GetAllUsers() ([]models.User, error) {
 	return s.repo.GetAllUsers()
+}
+
+func (s *UserService) SetNewPassword(email, newPassword string) (bool, error) {
+	return s.repo.SetNewPassword(email, newPassword)
+}
+
+func (s *UserService) ValidateUserCredentials(email, password string) (*models.User, error) {
+	return s.repo.ValidateUserCredentials(email, password)
 }
