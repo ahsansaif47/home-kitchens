@@ -1,8 +1,12 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/ahsansaif47/home-kitchens/auth/models"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
+	"github.com/ahsansaif47/home-kitchens/auth/repository/redis"
+	"github.com/ahsansaif47/home-kitchens/auth/utils"
 )
 
 type IUserService interface {
@@ -15,7 +19,8 @@ type IUserService interface {
 }
 
 type UserService struct {
-	repo postgres.IUserRepository
+	repo      postgres.IUserRepository
+	cacheRepo redis.ICacheRepository
 }
 
 func NewUserService(repo postgres.IUserRepository) IUserService {
@@ -50,4 +55,21 @@ func (s *UserService) SetNewPassword(email, newPassword string) (bool, error) {
 
 func (s *UserService) ValidateUserCredentials(email, password string) (*models.User, error) {
 	return s.repo.ValidateUserCredentials(email, password)
+}
+
+func (s *UserService) GenerateAndSendOTP(email string) error {
+	otp := utils.GenerateOTP()
+	// TODO:
+	// 1. Store OTP in Redis with expiration
+	// 2. Send OTP to user's email
+
+	otpHash := utils.HashOTP(otp)
+	err := s.cacheRepo.StoreOTP(email, otpHash, 1*time.Minute)
+	if err != nil {
+		return err
+	}
+	// Send the OTP to user's email
+	// RPC endpoint to send the OTP to emailing service
+
+	return nil
 }
