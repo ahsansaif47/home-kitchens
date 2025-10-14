@@ -11,5 +11,5 @@ import (
 func main() {
 	app := fiber.New()
 	routes.InitRoutes(app)
-	app.Listen(fmt.Sprintf(":%s", config.GetConfig().Port))
+	app.Listen(fmt.Sprintf(":%s", config.GetConfig().GlobalCfg.Port))
 }

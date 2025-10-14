@@ -4,8 +4,8 @@ import (
 	"log"
 	"sync"
 
+	"github.com/ahsansaif47/home-kitchens/auth/config"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
-	"github.com/ahsansaif47/home-kitchens/common/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -30,7 +30,7 @@ func GetDatabaseConnection() *Database {
 func connect() *gorm.DB {
 	c := config.GetConfig()
 
-	db, err := gorm.Open(postgres.Open(c.DBUrl), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(c.GlobalCfg.DBUrl), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting database: %v", err)
 	}
