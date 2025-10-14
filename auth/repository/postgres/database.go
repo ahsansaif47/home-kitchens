@@ -4,8 +4,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/ahsansaif47/home-kitchens/auth/config"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
+	"github.com/ahsansaif47/home-kitchens/common/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
