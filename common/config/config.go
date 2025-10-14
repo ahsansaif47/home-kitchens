@@ -11,11 +11,9 @@ import (
 )
 
 type Config struct {
-	DBUrl     string
-	RedisUrl  string
-	Port      string
-	JWTSecret string
-	JWTExpMin string
+	DBUrl    string
+	RedisUrl string
+	Port     string
 }
 
 var config *Config
@@ -54,11 +52,9 @@ func loadConfig() (*Config, error) {
 	)
 
 	return &Config{
-		DBUrl:     dsn,
-		RedisUrl:  redisUrl,
-		Port:      os.Getenv("PORT"),
-		JWTSecret: os.Getenv("JWT_SECRET"),
-		JWTExpMin: os.Getenv("JWT_EXPIRATION_MINUTES"),
+		DBUrl:    dsn,
+		RedisUrl: redisUrl,
+		Port:     os.Getenv("PORT"),
 	}, err
 
 }
