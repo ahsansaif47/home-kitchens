@@ -6,7 +6,7 @@ import (
 
 	"github.com/ahsansaif47/home-kitchens/auth/http/controllers"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
-	r "github.com/ahsansaif47/home-kitchens/auth/repository/redis"
+	r "github.com/ahsansaif47/home-kitchens/common/database"
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/gofiber/swagger"
