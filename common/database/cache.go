@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ahsansaif47/common/config"
+	"github.com/ahsansaif47/home-kitchens/common/config"
 	"github.com/redis/go-redis/v9"
 )
 

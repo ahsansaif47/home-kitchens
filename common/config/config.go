@@ -11,17 +11,15 @@ import (
 )
 
 type Config struct {
-	DBUrl     string
-	RedisUrl  string
-	Port      string
-	JWTSecret string
-	JWTExpMin string
+	DBUrl    string
+	RedisUrl string
+	Port     string
 }
 
-var config *Config
+var config Config
 var once sync.Once
 
-func GetConfig() *Config {
+func GetConfig() Config {
 	once.Do(func() {
 		instance, err := loadConfig()
 		if err != nil {
@@ -33,7 +31,7 @@ func GetConfig() *Config {
 	return config
 }
 
-func loadConfig() (*Config, error) {
+func loadConfig() (Config, error) {
 	err := godotenv.Load(filepath.Join("..", "..", ".env"))
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
@@ -53,12 +51,10 @@ func loadConfig() (*Config, error) {
 		os.Getenv("REDIS_DATABASE"),
 	)
 
-	return &Config{
-		DBUrl:     dsn,
-		RedisUrl:  redisUrl,
-		Port:      os.Getenv("PORT"),
-		JWTSecret: os.Getenv("JWT_SECRET"),
-		JWTExpMin: os.Getenv("JWT_EXPIRATION_MINUTES"),
+	return Config{
+		DBUrl:    dsn,
+		RedisUrl: redisUrl,
+		Port:     os.Getenv("PORT"),
 	}, err
 
 }

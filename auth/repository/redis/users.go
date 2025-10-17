@@ -3,6 +3,8 @@ package redis
 import (
 	"context"
 	"time"
+
+	data "github.com/ahsansaif47/home-kitchens/common/database"
 )
 
 type ICacheRepository interface {
@@ -11,10 +13,10 @@ type ICacheRepository interface {
 }
 
 type CacheRepository struct {
-	cache Cache
+	cache data.Cache
 }
 
-func NewUserCache(cache Cache) ICacheRepository {
+func NewUserCache(cache data.Cache) ICacheRepository {
 	return &CacheRepository{cache: cache}
 }
 

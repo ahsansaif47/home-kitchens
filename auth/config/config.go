@@ -33,7 +33,6 @@ func GetConfig() AuthConfig {
 
 func loadConfig() (AuthConfig, error) {
 	err := godotenv.Load(filepath.Join("..", "..", ".env"))
-
 	globalConf := config.GetConfig()
 
 	return AuthConfig{
