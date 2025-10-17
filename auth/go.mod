@@ -8,10 +8,7 @@ require (
 	gorm.io/gorm v1.31.0
 )
 
-require (
-	github.com/ahsansaif47/home-kitchens/common v0.0.0
-	github.com/redis/go-redis/v9 v9.14.0
-)
+require github.com/ahsansaif47/home-kitchens/common v0.0.0
 
 // Use local copy of common during development
 replace github.com/ahsansaif47/home-kitchens/common => ../common
@@ -33,12 +30,15 @@ require (
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
+	github.com/redis/go-redis/v9 v9.14.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/swaggo/files/v2 v2.0.2 // indirect
 	github.com/swaggo/swag v1.16.4 // indirect
 	golang.org/x/tools v0.36.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
@@ -65,4 +65,5 @@ require (
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
+	google.golang.org/grpc v1.76.0
 )
