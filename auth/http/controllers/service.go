@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"context"
 	"time"
 
 	"github.com/ahsansaif47/home-kitchens/auth/models"
@@ -74,7 +75,7 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	// Send the OTP to user's email
 	// RPC endpoint to send the OTP to emailing service
 
-	err := ec.
+	err := s.emailClient.SendOTPEmail(context.Background(), notifications.)
 
 	return nil
 }
