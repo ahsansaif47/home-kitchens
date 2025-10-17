@@ -10,6 +10,7 @@ import (
 	"github.com/ahsansaif47/home-kitchens/auth/utils"
 
 	ec "github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
+	n "github.com/ahsansaif47/home-kitchens/notifications/constants"
 )
 
 type IUserService interface {
@@ -22,8 +23,8 @@ type IUserService interface {
 }
 
 type UserService struct {
-	repo      postgres.IUserRepository
-	cacheRepo redis.ICacheRepository
+	repo        postgres.IUserRepository
+	cacheRepo   redis.ICacheRepository
 	emailClient ec.EmailClient
 }
 
@@ -75,7 +76,7 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	// Send the OTP to user's email
 	// RPC endpoint to send the OTP to emailing service
 
-	err := s.emailClient.SendOTPEmail(context.Background(), notifications.)
+	err := s.emailClient.SendOTPEmail(context.Background(), n.HomeKitchensEmail)
 
 	return nil
 }
