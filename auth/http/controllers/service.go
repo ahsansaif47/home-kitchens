@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
+	"github.com/ahsansaif47/home-kitchens/auth/constants"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/redis"
 	"github.com/ahsansaif47/home-kitchens/auth/utils"
 
 	ec "github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
-	n "github.com/ahsansaif47/home-kitchens/notifications/constants"
 )
 
 type IUserService interface {
@@ -76,7 +76,11 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	// Send the OTP to user's email
 	// RPC endpoint to send the OTP to emailing service
 
-	err := s.emailClient.SendOTPEmail(context.Background(), n.HomeKitchensEmail)
+	// TODO: Pick this email from notifications service later on
+	err = s.emailClient.SendOTPEmail(context.Background(), constants.HomeKitchensEmail, email, "OTP Verification Email", otp)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
