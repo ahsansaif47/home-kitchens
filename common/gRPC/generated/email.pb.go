@@ -144,8 +144,9 @@ const file_email_proto_rawDesc = "" +
 	"\x03otp\x18\x03 \x01(\tR\x03otp\x12\x18\n" +
 	"\asubject\x18\x04 \x01(\tR\asubject\"-\n" +
 	"\x11SendEmailResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\x0e\n" +
-	"\fEmailServiceBBZ@github.com/ahsansaif47/home-kitchens/common/gRPC/generated;emailb\x06proto3"
+	"\asuccess\x18\x01 \x01(\bR\asuccess2Q\n" +
+	"\fEmailService\x12A\n" +
+	"\fSendOTPEmail\x12\x17.email.SendEmailRequest\x1a\x18.email.SendEmailResponseBBZ@github.com/ahsansaif47/home-kitchens/common/gRPC/generated;emailb\x06proto3"
 
 var (
 	file_email_proto_rawDescOnce sync.Once
@@ -165,8 +166,10 @@ var file_email_proto_goTypes = []any{
 	(*SendEmailResponse)(nil), // 1: email.SendEmailResponse
 }
 var file_email_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
+	0, // 0: email.EmailService.SendOTPEmail:input_type -> email.SendEmailRequest
+	1, // 1: email.EmailService.SendOTPEmail:output_type -> email.SendEmailResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

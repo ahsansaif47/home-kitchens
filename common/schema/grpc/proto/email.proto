@@ -17,5 +17,5 @@ message SendEmailResponse {
 }
 
 service EmailService {
-
+    rpc SendOTPEmail (SendEmailRequest) returns (SendEmailResponse);
 }
