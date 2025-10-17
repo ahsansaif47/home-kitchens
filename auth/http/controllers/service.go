@@ -7,8 +7,6 @@ import (
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/redis"
 	"github.com/ahsansaif47/home-kitchens/auth/utils"
-
-	emailCleint "github.com/ahsansaif47/home-kichens/auth/gRPC/services"
 )
 
 type IUserService interface {
@@ -73,7 +71,7 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	// Send the OTP to user's email
 	// RPC endpoint to send the OTP to emailing service
 
-	err := 
+	err := eC.
 
 	return nil
 }
