@@ -38,14 +38,13 @@ func main() {
 		}
 	}()
 
-	// Workflow start options
+	// TODO: This needs to be called by the RPC Server.
+	// Here it is used for testing purpose to check OTP flow.
 	options := client.StartWorkflowOptions{
 		ID:        "send-otp-workflow", // unique ID per workflow instance
 		TaskQueue: "otp-queue",         // must match your worker’s Task Queue
 	}
 
-	// TODO: This needs to be called by the RPC Server.
-	// Here it is used for testing purpose to check OTP flow.
 	we, err := temporalClient.ExecuteWorkflow(context.Background(), options, workflows.SendOTPWorkflow, "ahsansaif047@gmail.com", "123456")
 	if err != nil {
 		log.Fatalf("unable to start workflow: %v", err)
