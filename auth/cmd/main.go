@@ -36,7 +36,7 @@ func startHTTP() {
 	routes.InitRoutes(app)
 
 	port := config.GetConfig().GlobalCfg.Port
-	log.Println("Fiber server listening on port: %s", port)
+	log.Printf("Fiber server listening on port: %s", port)
 	app.Listen(fmt.Sprintf(":%s", port))
 }
 
