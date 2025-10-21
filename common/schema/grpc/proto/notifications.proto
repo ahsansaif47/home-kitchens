@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package notifications;
+
+option go_package = "github.com/ahsansaif47/home-kitchens/common/gRPC/generated/notifications;notifications";
+
+
+message SendEmailRequest {
+    string to = 1;
+    string from = 2;
+    string subject = 4;
+    string message = 5;
+}
+
+message SendOTPRequest {
+    SendEmailRequest email_req = 1;
+    string otp = 2;
+}
+
+
+
+message SendEmailResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+service EmailService {
+    rpc SendOTPEmail (SendOTPRequest) returns (SendEmailResponse);
+}
