@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
 
-	pb "github.com/ahsansaif47/home-kitchens/common/gRPC/generated"
+	pb "github.com/ahsansaif47/home-kitchens/common/gRPC/generated/notifications"
 )
 
 func main() {

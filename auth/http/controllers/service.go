@@ -77,7 +77,7 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	// RPC endpoint to send the OTP to emailing service
 
 	// TODO: Pick this email from notifications service later on
-	err = s.emailClient.SendOTPEmail(context.Background(), constants.HomeKitchensEmail, email, "OTP Verification Email", otp)
+	err = s.emailClient.SendOTPEmail(context.Background(), constants.HomeKitchensEmail, email, "OTP Verification Email", "", otp)
 	if err != nil {
 		return err
 	}

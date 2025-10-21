@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "github.com/ahsansaif47/home-kitchens/common/gRPC/generated"
+	pb "github.com/ahsansaif47/home-kitchens/common/gRPC/generated/notifications"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -32,12 +32,15 @@ func (c *EmailClient) Close() {
 	}
 }
 
-func (c *EmailClient) SendOTPEmail(ctx context.Context, from, to, subject, otp string) error {
-	req := &pb.SendEmailRequest{
-		To:      to,
-		From:    from,
-		Subject: subject,
-		Otp:     otp,
+func (c *EmailClient) SendOTPEmail(ctx context.Context, from, to, subject, message, otp string) error {
+	req := &pb.SendOTPRequest{
+		EmailReq: &pb.SendEmailRequest{
+			To:      to,
+			From:    from,
+			Subject: subject,
+			Message: message,
+		},
+		Otp: otp,
 	}
 
 	resp, err := c.client.SendOTPEmail(ctx, req)

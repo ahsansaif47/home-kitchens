@@ -3,7 +3,7 @@ package workflows
 import (
 	"time"
 
-	"github.com/ahsansaif47/home-kitchens/notifications/activities"
+	"github.com/ahsansaif47/home-kitchens/notifications/async_server/activities"
 	"go.temporal.io/sdk/temporal"
 	"go.temporal.io/sdk/workflow"
 )
