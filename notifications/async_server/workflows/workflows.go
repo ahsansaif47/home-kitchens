@@ -8,7 +8,7 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
-func SendOTPWorkflow(ctx workflow.Context, receipient, otp string) error {
+func SendOTPWorkflow(ctx workflow.Context, receipient, subject, message, otp string) error {
 
 	actOptions := workflow.ActivityOptions{
 		StartToCloseTimeout: time.Minute * 5,

@@ -14,7 +14,7 @@ type SenderData struct {
 	Password string
 }
 
-func SendOTPActivity(ctx context.Context, recipient, otp string) error {
+func SendOTPActivity(ctx context.Context, recipient, subject, message, otp string) error {
 	cfg := config.GetConfig()
 
 	sender := SenderData{
@@ -24,19 +24,19 @@ func SendOTPActivity(ctx context.Context, recipient, otp string) error {
 
 	addr := fmt.Sprintf("%s:%s", cfg.SmtpHost, cfg.SmtpPort)
 
-	message := fmt.Sprintf(
+	msg := fmt.Sprintf(
 		"From: %s\r\n"+
 			"To: %s\r\n"+
-			"Subject: OTP Verification Email\r\n"+
+			"Subject: %s\r\n"+
 			"MIME-Version: 1.0\r\n"+
 			"Content-Type: text/plain; charset=\"utf-8\"\r\n"+
 			"\r\n"+
 			"Your OTP is %s\r\n",
-		sender.Email, recipient, otp,
+		sender.Email, recipient, subject, otp,
 	)
 
 	auth := smtp.PlainAuth("", sender.Email, sender.Password, cfg.SmtpHost)
-	err := smtp.SendMail(addr, auth, sender.Email, []string{recipient}, []byte(message))
+	err := smtp.SendMail(addr, auth, sender.Email, []string{recipient}, []byte(msg))
 	if err != nil {
 		log.Println("Error sending OTP: %w", err)
 		return err

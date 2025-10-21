@@ -5,7 +5,7 @@ go 1.25.2
 require github.com/joho/godotenv v1.5.1
 
 require (
-	github.com/ahsansaif47/home-kitchens/common v0.0.0-20251017171904-ca1314d9ba91
+	github.com/ahsansaif47/home-kitchens/common v0.0.0-20251021054715-e2005f78fe84
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	go.temporal.io/api v1.53.0 // indirect
-	go.temporal.io/sdk v1.37.0 // indirect
+	go.temporal.io/sdk v1.37.0
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
