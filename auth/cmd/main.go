@@ -34,7 +34,7 @@ func startHTTP() {
 
 func startGRPC() {
 
-	lis, err := net.Listen("tcp", "50052")
+	lis, err := net.Listen("tcp", ":50052")
 	if err != nil {
 		log.Fatalf("error starting gRPC server: %s", err.Error())
 	}
