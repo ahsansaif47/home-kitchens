@@ -17,8 +17,6 @@ message SendOTPRequest {
     string otp = 2;
 }
 
-
-
 message SendEmailResponse {
     string id = 1;
     bool success = 2;
