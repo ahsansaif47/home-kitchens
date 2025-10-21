@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"sync"
 
 	"github.com/ahsansaif47/home-kitchens/auth/config"
 	"github.com/ahsansaif47/home-kitchens/auth/http/routes"
@@ -15,20 +14,12 @@ import (
 )
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(2)
 
 	go func() {
-		defer wg.Done()
-		startHTTP()
-	}()
-
-	go func() {
-		defer wg.Done()
 		startGRPC()
 	}()
 
-	wg.Wait()
+	startHTTP()
 }
 
 func startHTTP() {
@@ -37,14 +28,15 @@ func startHTTP() {
 
 	port := config.GetConfig().GlobalCfg.Port
 	log.Printf("Fiber server listening on port: %s", port)
-	app.Listen(fmt.Sprintf(":%s", port))
+	log.Fatal(app.Listen(fmt.Sprintf(":%s", port)))
+
 }
 
 func startGRPC() {
 
 	lis, err := net.Listen("tcp", "50052")
 	if err != nil {
-		log.Fatalf("error starting gRPC server: %w", err)
+		log.Fatalf("error starting gRPC server: %s", err.Error())
 	}
 
 	grpcServer := grpc.NewServer()
