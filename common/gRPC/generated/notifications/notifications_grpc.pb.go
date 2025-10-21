@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: email.proto
+// source: notifications.proto
 
-package email
+package notifications
 
 import (
 	context "context"
@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmailService_SendOTPEmail_FullMethodName = "/email.EmailService/SendOTPEmail"
+	EmailService_SendOTPEmail_FullMethodName = "/notifications.EmailService/SendOTPEmail"
 )
 
 // EmailServiceClient is the client API for EmailService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
-	SendOTPEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
+	SendOTPEmail(ctx context.Context, in *SendOTPRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 }
 
 type emailServiceClient struct {
@@ -37,7 +37,7 @@ func NewEmailServiceClient(cc grpc.ClientConnInterface) EmailServiceClient {
 	return &emailServiceClient{cc}
 }
 
-func (c *emailServiceClient) SendOTPEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error) {
+func (c *emailServiceClient) SendOTPEmail(ctx context.Context, in *SendOTPRequest, opts ...grpc.CallOption) (*SendEmailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SendEmailResponse)
 	err := c.cc.Invoke(ctx, EmailService_SendOTPEmail_FullMethodName, in, out, cOpts...)
@@ -51,7 +51,7 @@ func (c *emailServiceClient) SendOTPEmail(ctx context.Context, in *SendEmailRequ
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility.
 type EmailServiceServer interface {
-	SendOTPEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error)
+	SendOTPEmail(context.Context, *SendOTPRequest) (*SendEmailResponse, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -62,7 +62,7 @@ type EmailServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedEmailServiceServer struct{}
 
-func (UnimplementedEmailServiceServer) SendOTPEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error) {
+func (UnimplementedEmailServiceServer) SendOTPEmail(context.Context, *SendOTPRequest) (*SendEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendOTPEmail not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
@@ -87,7 +87,7 @@ func RegisterEmailServiceServer(s grpc.ServiceRegistrar, srv EmailServiceServer)
 }
 
 func _EmailService_SendOTPEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendEmailRequest)
+	in := new(SendOTPRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _EmailService_SendOTPEmail_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: EmailService_SendOTPEmail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EmailServiceServer).SendOTPEmail(ctx, req.(*SendEmailRequest))
+		return srv.(EmailServiceServer).SendOTPEmail(ctx, req.(*SendOTPRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -108,7 +108,7 @@ func _EmailService_SendOTPEmail_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var EmailService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "email.EmailService",
+	ServiceName: "notifications.EmailService",
 	HandlerType: (*EmailServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "email.proto",
+	Metadata: "notifications.proto",
 }
