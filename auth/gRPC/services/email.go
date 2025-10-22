@@ -14,6 +14,8 @@ type EmailClient struct {
 	client pb.EmailServiceClient
 }
 
+var EmailServiceClient *EmailClient
+
 func NewEmailClient(addr string) (*EmailClient, error) {
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {

@@ -24,5 +24,6 @@ func NewAsyncServer() (client.Client, error) {
 		log.Fatalf("unable to create temporal client: %v", err)
 	}
 
+	SetupWorkers()
 	return client, err
 }

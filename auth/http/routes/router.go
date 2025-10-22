@@ -13,19 +13,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitRoutes(app *fiber.App) {
-	// config := config.GetConfig()
-
+func InitRoutes(app *fiber.App, db *gorm.DB, cache *r.Cache) {
 	app.Get("/swagger/*", swagger.HandlerDefault)
-	db := postgres.GetDatabaseConnection().Connection
-	cache := r.NewCache()
 
 	api := app.Group("/api")
 
 	v1 := api.Group("/v1")
 
 	userRoutes := v1.Group("/users")
-	InitUserRoutes(userRoutes, db, cache)
+	InitUserRoutes(userRoutes, db, *cache)
 }
 
 func InitUserRoutes(userRoutes fiber.Router, db *gorm.DB, cache r.Cache) {
