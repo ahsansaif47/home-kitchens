@@ -8,13 +8,13 @@ import (
 	"github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
 	"github.com/ahsansaif47/home-kitchens/auth/http/routes"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
+	"github.com/ahsansaif47/home-kitchens/auth/repository/redis"
 	c "github.com/ahsansaif47/home-kitchens/common/database"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 func init() {
-
 	// TODO: Wrap in retry func
 	emailRpcClient, err := services.NewEmailClient(":50052")
 	if err != nil {
@@ -22,26 +22,24 @@ func init() {
 	}
 
 	services.EmailServiceClient = emailRpcClient
-
-	// ...
-
 }
 
 func main() {
 
 	db := postgres.GetDatabaseConnection().Connection
 	cache := c.NewCache()
+	userCache := redis.NewUserCache(cache)
 
 	// go func() {
 	// 	InitializegRPCClient()
 	// }()
 
-	startHTTP(db, cache)
+	startHTTP(db, userCache)
 }
 
-func startHTTP(db *gorm.DB, cache c.Cache) {
+func startHTTP(db *gorm.DB, cache redis.ICacheRepository) {
 	app := fiber.New()
-	routes.InitRoutes(app, db, &cache)
+	routes.InitRoutes(app, db, cache)
 
 	port := config.GetConfig().GlobalCfg.Port
 	log.Printf("Fiber server listening on port: %s", port)

@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/ahsansaif47/home-kitchens/auth/constants"
+	"github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
+	ec "github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
 	"github.com/ahsansaif47/home-kitchens/auth/models"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/postgres"
 	"github.com/ahsansaif47/home-kitchens/auth/repository/redis"
 	"github.com/ahsansaif47/home-kitchens/auth/utils"
-
-	ec "github.com/ahsansaif47/home-kitchens/auth/gRPC/services"
 )
 
 type IUserService interface {
@@ -28,7 +28,7 @@ type UserService struct {
 	emailClient ec.EmailClient
 }
 
-func NewUserService(repo postgres.IUserRepository) IUserService {
+func NewUserService(repo postgres.IUserRepository, cache redis.ICacheRepository, ec services.EmailClient) IUserService {
 	return &UserService{
 		repo: repo,
 	}
