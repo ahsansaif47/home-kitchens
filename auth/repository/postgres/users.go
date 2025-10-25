@@ -18,6 +18,7 @@ type IUserRepository interface {
 	GetAllUsers() ([]models.User, error)
 	SetNewPassword(email, newPassword string) (bool, error)
 	ValidateUserCredentials(email, password string) (*models.User, error)
+	FindUserByEmail(email string) (*models.User, error)
 }
 
 type UserRepository struct {
@@ -101,6 +102,17 @@ func (r *UserRepository) ValidateUserCredentials(email, password string) (*model
 
 	if !utils.CheckPasswordHash(password, *user.PasswordHash) {
 		return nil, nil
+	}
+
+	return &user, nil
+}
+
+func (r *UserRepository) FindUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	err := r.db.Where("email = ?", email).First(&user).Error
+	if err != nil {
+		return nil, err
 	}
 
 	return &user, nil

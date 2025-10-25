@@ -20,6 +20,7 @@ type IUserService interface {
 	GetAllVendors() ([]models.User, error)
 	GetAllUsers() ([]models.User, error)
 	SetNewPassword(email, newPassword string) (bool, error)
+	FindUserByEmail(email string) (*models.User, error)
 }
 
 type UserService struct {
@@ -83,4 +84,8 @@ func (s *UserService) GenerateAndSendOTP(email string) error {
 	}
 
 	return nil
+}
+
+func (s *UserService) FindUserByEmail(email string) (*models.User, error) {
+	return s.repo.FindUserByEmail(email)
 }

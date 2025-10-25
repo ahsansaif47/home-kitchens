@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"time"
 
 	"github.com/ahsansaif47/home-kitchens/auth/config"
@@ -11,6 +12,7 @@ import (
 	"github.com/ahsansaif47/home-kitchens/auth/utils"
 	"github.com/ahsansaif47/home-kitchens/auth/utils/jwt"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -38,9 +40,9 @@ func NewAuthHandler(service controllers.IUserService) *AuthHandler {
 //	@Produce		json
 //	@Body			user  dto.UserSignupRequest true "User Signup Request"
 //	@Success		200	{object}	dto.UserSignupResponse
-//	@Failure		400	{object}	fiber.Error
-//	@Failure		500	{object}	fiber.Error
-//	@Router			/signup [post]
+//	@Failure		400	{object}	dto.ErrorResponse
+//	@Failure		500	{object}	dto.ErrorResponse
+//	@Router			/users/signup [post]
 func (h *AuthHandler) CreateUser(ctx *fiber.Ctx) error {
 	userReq := dto.UserSignupRequest{}
 
@@ -114,11 +116,10 @@ func (h *AuthHandler) CreateUser(ctx *fiber.Ctx) error {
 //	@Param			body	body	dto.UserLoginRequest	true	"Signin User Request"
 //
 //	@Produce		json
-//	@Body			user  	dto.UserLoginRequest	 			true 	"User Signup Request"
-//	@Success		200		{object}	dto.UserLoginResponse
-//	@Failure		400		{object}	fiber.Error
-//	@Failure		500		{object}	fiber.Error
-//	@Router			/signup [post]
+//	@Success		200	{object}	dto.UserLoginResponse
+//	@Failure		400	{object}	dto.ErrorResponse
+//	@Failure		500	{object}	dto.ErrorResponse
+//	@Router			/users/signin [post]
 func (h *AuthHandler) Signin(ctx *fiber.Ctx) error {
 	signinReq := dto.UserLoginRequest{}
 
@@ -150,7 +151,31 @@ func (h *AuthHandler) Signin(ctx *fiber.Ctx) error {
 		})
 	}
 
-	response := dto.UserLoginResponse{}
+	// Get the user details from DB
+	user, err := h.service.FindUserByEmail(signinReq.Email)
+	if err != nil {
+		errResponse := dto.ErrorResponse{
+			Message: err.Error(),
+		}
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return ctx.Status(fiber.StatusNotFound).JSON(errResponse)
+
+		}
+		return ctx.Status(fiber.StatusInternalServerError).JSON(errResponse)
+	}
+
+	accessToken, err := jwt.GenerateJWT(signinReq.Email, user.UserName, user.RoleID, config.GetConfig().JWTSecret)
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(dto.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	response := dto.UserLoginResponse{
+		AccessToken: accessToken,
+		UserName:    user.UserName,
+		RoleID:      user.RoleID,
+	}
 
 	return ctx.Status(fiber.StatusOK).JSON(response)
 }

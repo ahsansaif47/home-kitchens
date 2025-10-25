@@ -36,6 +36,8 @@ type UserAddress struct {
 }
 
 type Role struct {
-	gorm.Model
-	Name string `gorm:"uniqueIndex;not null"`
+	ID        uint      `gorm:"primaryKey"`
+	Name      string    `gorm:"uniqueIndex;not null"`
+	CreatedAt time.Time `gorm:"not null;default:CURRENT_TIMESTAMP"`
+	UpdatedAt time.Time `gorm:"not null;default:CURRENT_TIMESTAMP"`
 }

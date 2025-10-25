@@ -8,7 +8,10 @@ require (
 	gorm.io/gorm v1.31.0
 )
 
-require github.com/ahsansaif47/home-kitchens/common v0.0.0
+require (
+	github.com/ahsansaif47/home-kitchens/common v0.0.0
+	google.golang.org/grpc v1.76.0
+)
 
 // Use local copy of common during development
 replace github.com/ahsansaif47/home-kitchens/common => ../common
@@ -65,5 +68,4 @@ require (
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
-	google.golang.org/grpc v1.76.0
 )

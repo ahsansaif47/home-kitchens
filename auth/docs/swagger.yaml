@@ -1,0 +1,139 @@
+basePath: /api/v1
+definitions:
+  github_com_ahsansaif47_home-kitchens_auth_http_dto.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_ahsansaif47_home-kitchens_auth_http_dto.UserLoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_ahsansaif47_home-kitchens_auth_http_dto.UserLoginResponse:
+    properties:
+      access_token:
+        type: string
+      role_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+  github_com_ahsansaif47_home-kitchens_auth_http_dto.UserSignupRequest:
+    properties:
+      dob:
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 50
+        minLength: 3
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone_number:
+        type: string
+      role_id:
+        enum:
+        - 1
+        - 2
+        - 3
+        type: integer
+      user_name:
+        maxLength: 50
+        minLength: 3
+        type: string
+    required:
+    - email
+    - first_name
+    - password
+    - role_id
+    - user_name
+    type: object
+  github_com_ahsansaif47_home-kitchens_auth_http_dto.UserSignupResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a swagger for HomeKitchens
+  title: HomeKitchens Local API
+  version: "1.0"
+paths:
+  /users/signin:
+    post:
+      consumes:
+      - application/json
+      description: Login User into the System
+      parameters:
+      - description: Signin User Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.UserLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.ErrorResponse'
+      summary: Authenticate User
+      tags:
+      - User
+  /users/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a New User
+      parameters:
+      - description: Signup User Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.UserSignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.UserSignupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ahsansaif47_home-kitchens_auth_http_dto.ErrorResponse'
+      summary: Create User
+      tags:
+      - User
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
